@@ -7,22 +7,15 @@ def Flag_phrase(phrase):
     flags_broad = []
     flags_exact = []
     for flag in flags:
-        any_search = re.search('.*' + flag + '.*', phrase)
-        left_search = re.search('^' + flag + '\W.*', phrase)
-        mid_search = re.search('.*\W' + flag + '\W.*', phrase)
-        right_search = re.search('.*' + flag + '$', phrase)
+        any_search = re.search(r'.*' + flag + r'.*', phrase)
+        left_search = re.search(r'^' + flag + r'\W.*', phrase)
+        mid_search = re.search(r'.*\W' + flag + r'\W.*', phrase)
+        right_search = re.search(r'.*\W' + flag + r'$', phrase)
 
-        flag_score = 0
         if any_search:
-            flag_score += 1
+            flags_broad.append(flag)
         if left_search or mid_search or right_search:
-            flag_score += 1
-
-        if flag_score == 2:
-            flags_broad.append(flag)
             flags_exact.append(flag)
-        elif flag_score == 1:
-            flags_broad.append(flag)
 
     flags_broad_string = ';'.join(flags_broad)
     flags_exact_string = ';'.join(flags_exact)
@@ -31,6 +24,10 @@ def Flag_phrase(phrase):
 #Open Files
 df_flags = pd.read_csv(r'flags.csv',encoding='utf-8')
 df_phrases = pd.read_csv(r'phrases.csv',encoding='utf-8')
+
+# If "Phrases" column is missing, rename the first column
+if 'Phrases' not in df_phrases.columns:
+    df_phrases.rename(columns={df_phrases.columns[0]: 'Phrases'}, inplace=True)
 
 #Make flags set
 flags = []
