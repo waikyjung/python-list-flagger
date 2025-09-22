@@ -25,10 +25,6 @@ def Flag_phrase(phrase):
 df_flags = pd.read_csv(r'flags.csv',encoding='utf-8')
 df_phrases = pd.read_csv(r'phrases.csv',encoding='utf-8')
 
-# If "Phrases" column is missing, rename the first column
-if 'Phrases' not in df_phrases.columns:
-    df_phrases.rename(columns={df_phrases.columns[0]: 'Phrases'}, inplace=True)
-
 #Make flags set
 flags = []
 for i in df_flags.index:
